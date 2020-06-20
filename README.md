@@ -115,3 +115,92 @@ http{
 curl -I http://localhost/style.css
 ```
 We'll notice that, Content-Type is not text/css. Hit the browser again and html page will be loaded with css.
+
+## location blocks
+
+#### Preference order: 
+**1. Exact Match: = URI**
+* Will execute this block that exactly match with this URI. 
+* http://localhost/greet 
+
+```
+location = /greet{
+			return 200 "Hello Moshiur - From exact location";
+		}
+```
+**2. Preferential Prefix Match ^~ URI**
+* Same as prefix match but has higher priority than regex match
+* http://localhost/greet2
+```
+# Preferential Prefix match
+		location ^~ /greet2{
+			return 200 "Hello Moshiur- From Preferential prefix location";
+		}
+```
+**3. REGEX match ~* URI**
+* Has higher priority than prefix match. but less priority than preferential prefix match.
+* http://localhost/greet2
+```
+# Regex match Case insensitive
+		location ~* /greet[0-9]{
+			return 200 "Hello Moshiur- From prefix-case insensitive location";
+		}
+```
+**4. Prefix match URI**
+* Lowest priority. Will execute this block when anything starts with greet
+* http://localhost/greeting , http://localhost/greetmoshiur etc.
+```
+# Prefix match
+		location /greet{ 
+			return 200 "Hello Moshiur- From prefix location";
+		}
+```
+* Location context should be placed inside server context.
+* nginx.conf file
+
+```
+events{}
+
+http{
+	
+	include mime.types;
+
+	server{
+	
+		listen 80;
+		server_name localhost;
+		root /home/moshiur/Desktop/nginx;
+
+		# Prefix match
+		location /greet{ 
+			return 200 "Hello Moshiur- From prefix location";
+		}
+
+		# Exact match
+		location = /greet{
+			return 200 "Hello Moshiur - From exact location";
+		}
+
+		# Regex  match Case sensitive
+		location ~ /greet[0-9]{
+			return 200 "Hello Moshiur - From regex-case sensitive location";
+		}
+
+		# Regex match Case insensitive
+		location ~* /greet[0-9]{
+			return 200 "Hello Moshiur- From prefix-case insensitive location";
+		}
+
+		# Preferential Prefix match
+		location ^~ /greet2{
+			return 200 "Hello Moshiur- From Preferential prefix location";
+		}
+	}
+}
+
+```
+
+## nginx variables
+* 2 types of variables
+  -  **Configuration Variables:** set $var 'some';
+  -  **Nginx Module Variables:** $http,$uri,$args etc
