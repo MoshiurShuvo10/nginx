@@ -34,7 +34,7 @@ cd nginx-1.19.0/
 ```
 ./configure
 ```
-* If "C Compiler cc not found" appeares, run 
+* If **C Compiler cc not found** appeares, run 
 ```
 sudo apt-get install build-essential
 ```
@@ -59,3 +59,59 @@ sudo make install
 ```
 nginx -V
 ```
+
+### Creating a sample virtual host
+* We'll create a basic virtual host that serves static files. 
+* Create a directory in Desktop and place a html file,a css file linked with that html and a image.
+```
+cd Desktop/moshiur/nginx
+touch index.html style.css sample.png
+```
+* We've to edit the main configuration file which is at /etc/nginx/ path.
+```
+sudo gedit /etc/nginx/nginx.conf
+```
+* Replace everything with the following lines inside it
+```
+events{}
+
+http{
+	server{
+		listen 80;
+		server_name localhost;
+		root /home/moshiur/Desktop/nginx;
+	}
+}
+```
+* Always check the conf file if there is any error or not.
+```
+sudo nginx -t -c /etc/nginx/nginx.conf
+```
+* If there is no error in the conf file, reload nginx. We've to do this everytime we make any change inside the nginx.conf file.
+```
+sudo systemctl reload nginx
+```
+* Now, if we hit "localhost" on our browser, our html page should be appeared instead of the nginx homepage. Because, we've replaced everything inside the nginx.conf file. 
+* We'll notice that, html file is appeared but css is not loaded. Its because, the css file is not treated according to its corresponsding Content-Type. To ensure this, run
+```
+curl -I http://localhost/style.css
+```
+We'll notice that, Content-Type of style.css is **text/plain**. 
+To enable all the mime types, We'll have to include **mime.types** inside nginx.conf file. So, our nginx.conf file should be like following:
+```
+events{}
+
+http{
+  include mime.types;
+	server{
+		listen 80;
+		server_name localhost;
+		root /home/moshiur/Desktop/nginx;
+	}
+}
+```
+* If we run the command again
+```
+curl -I http://localhost/style.css
+```
+We'll notice that, Content-Type is not text/css. Hit the browser again and html page will be loaded with css.
