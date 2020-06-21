@@ -260,6 +260,73 @@ age:20
 ```
 
 ## rewrite vs redirect
+```
+events{}
+
+http{
+	
+	include mime.types;
+
+	server{
+	
+		listen 80;
+		server_name localhost;
+		root /home/moshiur/Desktop/DSI-206/nginx;
+
+		set $weekend 'fasle';
+
+
+		if  ($date_local ~* 'saturday|sunday'){
+			set $weekend 'true';
+		}
+
+		rewrite ^/user/\w+ /greet ; 
+		rewrite /greet /logo ; 
+		rewrite /logo /homepage ; 
+		rewrite /homepage /moshiur ;
+		rewrite =/moshiur /dsi ; 
+
+		rewrite ^/profile/(\w+)/(official)/(mail) /hello/$1/$2/$3 ; 
+
+		location /shuvo {
+			return 307 /index.html ; 
+		}
+		location = /homepage{
+			return 200 "location : homepage" ; 
+		}
+
+		location /moshiur{
+			return 200 "location: moshiur";
+		}
+
+		location /dsi{
+			return 200 "Dynamic Solution Innovators Limited";
+		}
+
+		location = /greet{
+			return 200 "hello user. re-evaluated from user/word";
+		}
+		
+		location /logo{
+			return 307 /thumb.png;
+		}
+
+		location /isWeekend{
+			return 200 $weekend;
+		}
+
+		 location /inspect{
+			return 200 "host:$host\nuri:$uri\nname:$arg_name\naddress:$arg_address\nage:$arg_age";
+		}
+
+		location = /hello/shuvo/official/mail{
+			return 200 "hello shuvo-official-mail..regular expression captcha group" ; 
+		}
+	}
+}
+  
+```
+
 ## try_files
 ## error_log access_log
 ## Inheritence & Directive Types
