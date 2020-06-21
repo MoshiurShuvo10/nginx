@@ -231,8 +231,8 @@ http{
 		}
 	}
   ```
-  * There's a **space** between if and the paranthesis. Its mandatory. 
-  * $date_local is a nginx variable which represents the current date. Here, we've checked that, if its saturday or sunday.     Here, we've used regular expression **~** to match saturday or sunday. ***** represents case insensitive.
+  * **There's a space between if and the paranthesis. Its mandatory**. 
+  * $date_local is a nginx variable which represents the current date.Here, we've used regular expression **~** to match saturday or sunday. * represents case insensitive.
   * On the browser, hit http://localhost/isWeekend , it'll show true/false 
   
   ### Nginx Module Variables:
@@ -258,3 +258,12 @@ name:shuvo
 address:dhaka
 age:20
 ```
+
+## rewrite vs redirect
+## try_files
+## error_log access_log
+## Inheritence & Directive Types
+-  3 types of directives.
+   - Standard Directive
+   - Array Directive
+   - Action Directive
