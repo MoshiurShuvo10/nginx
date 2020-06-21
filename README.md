@@ -329,6 +329,17 @@ http{
 
 ## try_files
 ## error_log access_log
+```
+location /secure{
+			# creats a log file names secure.access.log inside /var/log/nginx directive. 
+			# Hitting localhost/secure on browser,logs will be available inside this file.
+			access_log /var/log/nginx/secure.access.log ; 
+
+			# We can simply skip logging for this location
+			access_log off ; 
+			return 200 "secured area... secure location"  ; 
+		}
+```
 ## Inheritence & Directive Types
 -  3 types of directives.
    - Standard Directive
