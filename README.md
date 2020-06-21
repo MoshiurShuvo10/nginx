@@ -327,8 +327,8 @@ http{
   
 ```
 
-## try_files
-## error_log access_log
+### try_files
+### error_log access_log
 ```
 location /secure{
 			# creats a log file names secure.access.log inside /var/log/nginx directive. 
@@ -345,3 +345,16 @@ location /secure{
    - Standard Directive
    - Array Directive
    - Action Directive
+   
+___
+### Serving Dynamic contents using php-fpm
+___
+
+* Install php-fpm
+```
+sudo apt-get install php-fpm
+```
+* Check the php service
+```
+sudo systemctl list-units | grep php
+```
