@@ -204,3 +204,56 @@ http{
 * 2 types of variables
   -  **Configuration Variables:** set $var 'some';
   -  **Nginx Module Variables:** $http,$uri,$args etc
+  ### Configuration Variables:
+  * We can use **if** condition inside nginx.conf file. Suppose, we'll have to determine is today weekend or not. We'll browse http://localhost/isWeekend and browser will return true or false based on the current day.
+  * Edit nginx.conf file:
+  ```
+  events{}
+
+  http{
+	
+	include mime.types;
+
+	server{
+	
+		listen 80;
+		server_name localhost;
+		root /home/moshiur/Desktop/DSI-206/nginx;
+
+		set $weekend 'fasle';
+
+		if  ($date_local ~* 'saturday|sunday'){
+			set $weekend 'true';
+		}
+
+		location /isWeekend{
+			return 200 $weekend;
+		}
+	}
+}
+
+  ```
+  
+  
+  ### Nginx Module Variables:
+* uri,host name and query parameters can be extracted using the module variables. 
+* Edit the nginx.conf file
+```
+location /inspect{
+	return 200 "$host\n$uri\n$args\n$arg_name";
+	}
+```
+* Hit the browser http://localhost/inspect?name=shuvo. Here, $host=localhost,$uri=/inspect,$args=query parameters,$arg_name is a compiled variable by nginx based on the query params. If there was another query param address=dhaka, then it could be extracted using $arg_address. For example,if our url is http://localhost/inspect?name=shuvo&address=dhaka&age=20 we can extract the individual query parameters like the following: 
+```
+location /inspect{
+		return 200 "host:$host\nuri:$uri\nname:$arg_name\naddress:$arg_address\nage:$arg_age";
+		}
+```
+* output: 
+```
+host:localhost
+uri:/inspect
+name:shuvo
+address:dhaka
+age:20
+```
