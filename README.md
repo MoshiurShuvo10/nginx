@@ -205,7 +205,7 @@ http{
   -  **Configuration Variables:** set $var 'some';
   -  **Nginx Module Variables:** $http,$uri,$args etc
   ### Configuration Variables:
-  * We can use **if** condition inside nginx.conf file. Suppose, we'll have to determine is today weekend or not. We'll browse http://localhost/isWeekend and browser will return true or false based on the current day.
+  * We can use **if** condition inside nginx.conf file. Suppose, we'll have to determine is today weekend or not. We'll browse http://localhost/isWeekend and browser will return true or false based on the current day. If its saturday or sunday, it'll return true as its weekend. Otherwise false.
   * Edit nginx.conf file:
   ```
   events{}
@@ -218,7 +218,7 @@ http{
 	
 		listen 80;
 		server_name localhost;
-		root /home/moshiur/Desktop/DSI-206/nginx;
+		root /home/moshiur/Desktop/nginx;
 
 		set $weekend 'fasle';
 
@@ -230,10 +230,10 @@ http{
 			return 200 $weekend;
 		}
 	}
-}
-
   ```
-  
+  * There's a **space** between if and the paranthesis. Its mandatory. 
+  * $date_local is a nginx variable which represents the current date. Here, we've checked that, if its saturday or sunday.     Here, we've used regular expression **~** to match saturday or sunday. ***** represents case insensitive.
+  * On the browser, hit http://localhost/isWeekend , it'll show true/false 
   
   ### Nginx Module Variables:
 * uri,host name and query parameters can be extracted using the module variables. 
@@ -249,6 +249,7 @@ location /inspect{
 		return 200 "host:$host\nuri:$uri\nname:$arg_name\naddress:$arg_address\nage:$arg_age";
 		}
 ```
+
 * output: 
 ```
 host:localhost
