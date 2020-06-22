@@ -373,7 +373,16 @@ ___
 	    ssl_certificate_key /etc/nginx/ssl/self.key ; 
 		}
   ```
-
+ ### Redirecting HTTP to HTTPS
+ ```
+ http{
+ 	server{
+		listen 80 ; 
+		server_name localhost ; 
+		return 301 https://$host$request_uri ; 
+	}
+ }
+ ```
 ### Serving Dynamic contents using php-fpm
 ___
 
