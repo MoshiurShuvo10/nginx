@@ -369,7 +369,7 @@ ___
   listen 443 ssl http2;
 		
 
-		ssl_certificate /etc/nginx/ssl/self.crt ; 
+	    ssl_certificate /etc/nginx/ssl/self.crt ; 
 	    ssl_certificate_key /etc/nginx/ssl/self.key ; 
 		}
   ```
@@ -434,6 +434,7 @@ ___
 	```
 	sudo apt-get install siege
 	```
+	
 ### Serving Dynamic contents using php-fpm
 ___
 
