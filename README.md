@@ -271,7 +271,7 @@ http{
 	
 		listen 80;
 		server_name localhost;
-		root /home/moshiur/Desktop/DSI-206/nginx;
+		root /home/moshiur/Desktop/nginx;
 
 		set $weekend 'fasle';
 
@@ -382,6 +382,47 @@ ___
 		return 301 https://$host$request_uri ; 
 	}
  }
+ ```
+ 
+ ### Optimizing SSL
+ * Generate dh parameters
+ ```
+ openssl dhparam -out /etc/nginx/ssl/dhparam.pem 2048
+ ```
+ * nginx.conf
+ ```
+ server{
+	
+		listen 443 ssl http2;
+		server_name localhost;
+		root /home/moshiur/Desktop/nginx;
+
+		ssl_certificate /etc/nginx/ssl/self.crt ; 
+	    ssl_certificate_key /etc/nginx/ssl/self.key ; 
+
+	    # Disable SSL
+	    # Enable TLS
+	    # SSL was replaced by TLS(Transport Layer Security)
+	    # Our http connection is being encrypted by TLS, not SSL
+	    ssl_protocols TLSv1 TLSv1.1 TLSv1.2 ; 
+
+	    # Specify which cipher suits should our TLS protocol use to
+	    # encrypt out http connection
+	    ssl_prefer_server_ciphers on ; 
+	    ssl_ciphers ECDH+AESGCM:ECDH+AES256:ECDH+AES128:DH+3DES:!ADH:!AECDH:!MD5;
+
+	    # Enabling DH params(Diffie-Hellman) Key exchange
+	    # Allows performing key exchange between client and server with pure secrecy
+	    ssl_dhparam /etc/nginx/ssl/dhparam.pem;
+
+	    # Enabling HSTS
+	    add_header Strict-Transport-Security "max-age=31536000" always;
+
+	    # SSL sessions
+	    ssl_session_cache shared:SSL:40m;
+	    ssl_session_timeout 4h ; 
+	    ssl_session_tickets on ; 
+	}
  ```
 ### Serving Dynamic contents using php-fpm
 ___
