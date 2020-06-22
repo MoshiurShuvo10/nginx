@@ -347,6 +347,33 @@ location /secure{
    - Action Directive
    
 ___
+
+### HTTP 2
+* HTTP2 features:
+  -  Binary Protocol: HTTP 1.1 is a textual protocol, while HTTP2 is a binary protocol. HTTP 2 transfers  binary data consists   of only 0 and 1
+  - Compressed Header
+  - Persistent Connection
+  - Multiplex Streaming
+  - Server Push
+  
+  ### Enabling HTTP2
+  
+  * create a sefl signed certificate and key
+  ```
+  sudo mkdir /etc/nginx/ssl
+  openssl req -x509 -days 10 -nodes -newkey rsa:2048 -keyout /etc/nginx/ssl/self.key -out /etc/nginx/ssl/self.crt
+  ```
+  * nginx.conf
+  ```
+  server{
+  listen 443 ssl http2;
+		
+
+		ssl_certificate /etc/nginx/ssl/self.crt ; 
+	    ssl_certificate_key /etc/nginx/ssl/self.key ; 
+		}
+  ```
+
 ### Serving Dynamic contents using php-fpm
 ___
 
