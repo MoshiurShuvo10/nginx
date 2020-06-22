@@ -424,6 +424,16 @@ ___
 	    ssl_session_tickets on ; 
 	}
  ```
+ 
+### Rate Limiting 
+    - Manage incoming connection to the server for specific reason. Specific reasons can be one of the following:
+	  - Security: Burte-force protection
+	  - Reliablility: Prevent traffic spikes
+	  - Shaping: Service priority
+	- Install Siege
+	```
+	sudo apt-get install siege
+	```
 ### Serving Dynamic contents using php-fpm
 ___
 
