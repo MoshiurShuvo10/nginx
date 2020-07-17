@@ -45,7 +45,7 @@ sudo apt-get install libpcre3 libpcre3-dev zlib1g zlib1g-dev libssl-dev
 ```
 * Now, it's time to add some customized configuration flags. 
 ```
-./configure --sbin-path=/usr/bin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-pcre --pid-path=/var/run/nginx.pid --with-http_ssl_module
+./configure --sbin-path=/usr/bin/nginx --conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --with-pcre --pid-path=/var/run/nginx.pid --with-http_ssl_module --with-http_v2_module
 ```
 * Compile the configuration source by running 
 ```
