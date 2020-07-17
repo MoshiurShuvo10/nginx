@@ -469,6 +469,40 @@ ___
 	}
  ```
  
+### Setup proxy server for two node js applications 
+* app1 running at localhost:9999
+* app2 running at localhost:9998
+
+* go to /etc/nginx/sites-available and deleted the default file. Create a new file named app.Put the following configurations in it: 
+```
+server{
+	listen 80 ; 
+	server_name app1 ; 
+	location / {
+		proxy_pass "http://localhost:9999" ; 
+	}
+}
+
+server{
+	listen 80 ; 
+	server_name app2 ; 
+	location / {
+		proxy_pass "http://localhost:9998" ; 
+	}
+}
+```
+* link sites-available with sites-enabled
+```
+sudo ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled/app
+```
+* edit /etc/hosts. add server name 
+```
+127.0.0.1    app1
+127.0.0.1    app2
+```
+* reload nginx and hit on the browser: http://app1 , http://app2 [No need to specify port number of each application]
+
+ 
 ### Rate Limiting 
 * Manage incoming connection to the server for specific reason. Specific reasons can be one of the following:
 - Security: Burte-force protection
