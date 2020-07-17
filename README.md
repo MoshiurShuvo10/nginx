@@ -276,6 +276,14 @@ location /greet{
 	}
 ```
 * Here, if we hit localhost/user/shuvo, it'll reevaluated to /greet internally and nginx will search for this /greet location from the beginning of the conf file. That's why, we need to declare a location /greet. In this case, url is not changed on browser. We hit localhost/user/shuvo , we'll get result which is returned by /greet (hello user) but url will remain same(localhost/user/shuvo)
+* We can capture certain part of uri in rewrite. From ^/user/(\w+) we can capture the name part i.e. (w\+) by $1, $2 ...
+```
+rewrite ^/user/(\w+) /greet/$1
+location = /greet/shuvo{
+	return 200 "hello shuvo" ; 
+	}
+```
+* Here, if we hit localhost/user/shuvo, it'll reevaluated to /greet/shuvo, and after geeting the exact match with the location, it'll return "hello shuvo"
 ```
 events{}
 
