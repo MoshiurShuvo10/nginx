@@ -283,7 +283,13 @@ location = /greet/shuvo{
 	return 200 "hello shuvo" ; 
 	}
 ```
-* Here, if we hit localhost/user/shuvo, it'll reevaluated to /greet/shuvo, and after geeting the exact match with the location, it'll return "hello shuvo"
+* Here, if we hit localhost/user/shuvo, it'll reevaluated to /greet/shuvo, and after geeting the exact match with the location, it'll return "hello shuvo".
+* In the following scenario, if we hit, localhost/user/shuvo, It'll be re-written to /localhost/greet/shuvo. Then starting form the beginning, it'll match ^/greet/shuvo and again will be re-written to /thumb.png. Finally, thumb.png will be served but url will be still localhost/user/shuvo. 
+```
+rewrite ^/user/(\w+) /greet/$1 ; 
+rewrite ^/greet/shuvo /thumb.png
+```
+* Rewriting uri can be restricted using a flag named "last". By declaring like "rewrite ^/user/(\w+) /greet/$1 last" , we're telling nginx that, skip the rest of the rewrite directives. Its the last time. no need to rewrite anymore. 
 ```
 events{}
 
@@ -352,6 +358,20 @@ http{
 ```
 
 ### try_files
+```
+root /home/shuvo ; 
+try_files $uri /cat.png /greet /notfound ; 
+location /greet {
+	return 200 "hello" ; 
+	}
+location /notfound{
+	return 404 "not found" ; 
+	}
+```
+* try_files checks for the resources regardless the uri. whatever we hit on browser, such as localhost/abcd, It'll execute like the following: 
+  * /home/shuvo/cat.png ; cat.png is not present in /home/shuvo, so forward to the next resource
+  * /home/shuvo/greet   ; we have a location named /greet but not in the root location. so, forward..
+  * /home/shuvo/notfound; only the last location is rewriteen and executed. /notfound location will be executed. 
 ### error_log access_log
 ```
 location /secure{
