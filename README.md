@@ -260,6 +260,22 @@ age:20
 ```
 
 ## rewrite vs redirect
+### redirect: 
+* status code 300 series and response data(strng) is a uri. Lets say, We get an image by hitting localhost/thumb.png. Now, we want to get this by hitting localhost/logo. We can simply redirect the url like the following. In this case, uri on browser will be changed after redirecting.  url will be location/logo to location/thumb.png as url is being redirected
+```
+location /logo{
+    return 307 /thumb.png ; 
+    }
+```
+### rewrite:
+* In this case, url is not changed. url is reevaluated. 
+```
+rewrite ^/user/\w+ /greet
+location /greet{
+	return 200 "hello user" ; 
+	}
+```
+* Here, if we hit localhost/user/shuvo, it'll reevaluated to /greet internally and nginx will search for this /greet location from the beginning of the conf file. That's why, we need to declare a location /greet. In this case, url is not changed on browser. We hit localhost/user/shuvo , we'll get result which is returned by /greet (hello user) but url will remain same(localhost/user/shuvo)
 ```
 events{}
 
